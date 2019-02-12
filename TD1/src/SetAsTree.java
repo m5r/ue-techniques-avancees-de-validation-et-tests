@@ -5,9 +5,9 @@ public class SetAsTree {
     public SetAsTree ltree;
     public SetAsTree rtree;
 
-    //@ public invariant ((val != null) || (ltree == null && rtree == null));
-    //@ public invariant ((ltree == null) || (!ltree.emptySet() && ( ltree.max() < val)));
-    //@ public invariant ((rtree == null) || (!rtree.emptySet() && ( rtree.min() > val)));
+    //@ public invariant ((this.val != null) || (this.ltree == null && this.rtree == null));
+    //@ public invariant ((this.ltree == null) || (!this.ltree.emptySet() && ( this.ltree.max() < this.val)));
+    //@ public invariant ((this.rtree == null) || (!this.rtree.emptySet() && ( this.rtree.min() > this.val)));
     //@ public invariant (* no cycle in the tree *);
 
     // Constructor
@@ -67,7 +67,7 @@ public class SetAsTree {
         }
 
         if (v > this.val) {
-            if(this.rtree == null) {
+            if (this.rtree == null) {
                 this.setRtree(new SetAsTree(v));
                 return;
             }
@@ -77,7 +77,7 @@ public class SetAsTree {
 
 
         if (v < this.val) {
-            if(this.ltree == null) {
+            if (this.ltree == null) {
                 this.setLtree(new SetAsTree(v));
                 return;
             }
@@ -87,7 +87,68 @@ public class SetAsTree {
     }
 
     public void delete(int v) {
+        SetAsTree tree = this;
+
+        while (tree.val != v) {
+            if (v < tree.val) {
+                tree = tree.ltree;
+            }
+
+            if (v > tree.val) {
+                tree = tree.rtree;
+            }
+        }
+
+        tree.val = tree.rtree.getVal();
+        tree.rtree = tree.rtree.getRtree();
     }
+
+    /*public void delete(int v) {
+        SetAsTree parent = new SetAsTree();
+        SetAsTree fils_gauche = this.ltree;
+        SetAsTree fils_droit = this.rtree;
+        parent = this;
+
+        while (parent != null) {
+            if (fils_gauche != null && fils_gauche.val < v) {
+                parent = fils_gauche;
+                fils_gauche = parent.ltree;
+                fils_droit = parent.rtree;
+                this = this.ltree;
+            }
+
+            if (fils_droit != null && fils_droit.val > v) {
+                parent = fils_droit;
+                fils_gauche = parent.ltree;
+                fils_droit = parent.rtree;
+                this = this.rtree;
+            }
+
+            if (fils_droit != null && fils_droit.val == v) {
+                SetAsTree fils = new SetAsTree();
+                fils = fils_droit;
+                parent.rtree = fils.ltree;
+                parent.rtree.rtree = fils.rtree;
+                this.set = parent;
+                return;
+
+            }
+
+            if (fils_gauche != null && fils_gauche.val == v) {
+                SetAsTree fils = new SetAsTree();
+                fils = fils_gauche;
+                parent.ltree = fils.rtree;
+                parent.ltree.ltree = fils.rtree;
+                this = parent;
+                return;
+            }
+
+            if (fils_gauche==null && fils_droit==null){
+                return;
+            }
+
+        }
+    }*/
 
     // Pure functions used in the specification
     public /*@ pure helper @*/ boolean emptySet() {

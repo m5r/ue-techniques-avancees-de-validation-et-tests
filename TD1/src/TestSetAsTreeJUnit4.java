@@ -24,8 +24,14 @@ public class TestSetAsTreeJUnit4 {
 		s.insert(1);
 		s.insert(0);
 		s.insert(2);
+		s.insert(3);
 		s.insert(20);
-		s.delete(5);
+
+		assertTrue(s.getLtree().getVal().equals(1));
+
+		s.delete(1);
+
+		assertTrue(s.getLtree().getVal().equals(2));
 	}
 
 }
