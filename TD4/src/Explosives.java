@@ -114,7 +114,6 @@ public class Explosives {
     //@ ensures \result.startsWith("Bat");
     public String findBat(String prod) {
         ArrayList<String> incompatibilities = new ArrayList<>();
-        HashMap<String, ArrayList<String>> batiments = new HashMap<>();
 
         for (int i = 0; i < nb_inc; i++) {
             if (incomp[i][0] == prod) {
@@ -122,16 +121,10 @@ public class Explosives {
             }
         }
 
-        for (int j = 0; j < nb_assign; j++) {
-            String batimentName = assign[j][0];
-            String productName = assign[j][1];
-            ArrayList<String> products = batiments.containsKey(batimentName) ? batiments.get(batimentName) : new ArrayList<>();
-            products.add(productName);
-            batiments.put(batimentName, products);
-        }
+        HashMap<String, ArrayList<String>> batiments = this.getBatimentsProducts();
 
         for (Map.Entry<String, ArrayList<String>> entry : batiments.entrySet()) {
-            String potential_batiment = entry.getKey();
+            String potentialBatiment = entry.getKey();
             ArrayList<String> products = entry.getValue();
 
             ArrayList<String> filteredProducts = new ArrayList<>();
@@ -143,10 +136,24 @@ public class Explosives {
             }
 
             if (filteredProducts.size() > 0 && !filteredProducts.contains(prod)) {
-                return potential_batiment;
+                return potentialBatiment;
             }
         }
 
         return "Bat_rien";
+    }
+
+    private /*@helper@*/ HashMap<String, ArrayList<String>> getBatimentsProducts() {
+        HashMap<String, ArrayList<String>> batiments = new HashMap<>();
+
+        for (int i = 0; i < nb_assign; i++) {
+            String batimentName = assign[i][0];
+            String productName = assign[i][1];
+            ArrayList<String> products = batiments.containsKey(batimentName) ? batiments.get(batimentName) : new ArrayList<>();
+            products.add(productName);
+            batiments.put(batimentName, products);
+        }
+
+        return batiments;
     }
 }
