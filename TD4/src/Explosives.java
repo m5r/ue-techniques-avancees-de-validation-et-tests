@@ -111,6 +111,7 @@ public class Explosives {
     public void skip() {
     }
 
+    //@ ensures \result.startsWith("Bat");
     public String findBat(String prod) {
         ArrayList<String> incompatibilities = new ArrayList<>();
         HashMap<String, ArrayList<String>> batiments = new HashMap<>();
@@ -129,7 +130,6 @@ public class Explosives {
             batiments.put(batimentName, products);
         }
 
-        String batiment = "Bat_rien";
         for (Map.Entry<String, ArrayList<String>> entry : batiments.entrySet()) {
             String potential_batiment = entry.getKey();
             ArrayList<String> products = entry.getValue();
@@ -138,15 +138,15 @@ public class Explosives {
             for (int i = 0; i < products.size(); i++) {
                 String product = products.get(i);
                 if (incompatibilities.contains(product)) {
-                  filteredProducts.add(product);
+                    filteredProducts.add(product);
                 }
             }
 
             if (filteredProducts.size() > 0 && !filteredProducts.contains(prod)) {
-                batiment = potential_batiment;
+                return potential_batiment;
             }
         }
 
-        return batiment;
+        return "Bat_rien";
     }
 }

@@ -103,19 +103,6 @@ public class TestExplosivesJUnit4 {
     public void test_prop_6() {
         try {
             e = new Explosives();
-            e.incomp[e.nb_inc][0] = "Prod_A";
-            e.incomp[e.nb_inc][1] = "Prod_B";
-            e.nb_inc = e.nb_inc + 1;
-            e.skip();
-        } catch (JmlAssertionError err) {
-            handleJMLAssertionError(err);
-        }
-    }
-
-    @Test
-    public void test_prop_6_bis() {
-        try {
-            e = new Explosives();
             e.add_incomp("Prod_Nitro", "Prod_Glycerine");
             assertEquals(e.incomp[0][0], e.incomp[1][1]);
             assertEquals(e.incomp[0][1], e.incomp[1][0]);
@@ -131,19 +118,6 @@ public class TestExplosivesJUnit4 {
             e.add_incomp("Prod_Nitro", "Prod_Glycerine");
             e.add_assign("Bat_1", "Prod_Nitro");
             e.add_assign("Bat_1", "Prod_Glycerine");
-        } catch (JmlAssertionError err) {
-            handleJMLAssertionError(err);
-        }
-    }
-
-    @Test
-    public void test_find_bat() {
-        try {
-            e = new Explosives();
-            e.add_assign("Bat_1", "Prod_Nitro");
-
-            String bat = e.findBat("Prod_Nitro");
-            assertEquals("Bat_rien", "Bat_rien");
         } catch (JmlAssertionError err) {
             handleJMLAssertionError(err);
         }
